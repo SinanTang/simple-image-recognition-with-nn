@@ -1,13 +1,7 @@
 import numpy
 import matplotlib.pyplot as plt
 
-
-def read_data_list(data_file):
-    fh = open(data_file, 'r')
-    data_list = fh.readlines()
-    fh.close()
-
-    return data_list
+from src.utils import read_data_list
 
 
 def visualise_datapoint(data_list, n):

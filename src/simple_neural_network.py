@@ -22,6 +22,8 @@ class NeuralNetwork:
         self.activation_function = lambda x: scipy.special.expit(x)
 
     def train(self, input_list, target_list):
+        print('Training starts...')
+
         inputs = numpy.array(input_list, ndmin=2).T
         targets = numpy.array(target_list, ndmin=2).T
 
@@ -38,7 +40,7 @@ class NeuralNetwork:
         self.who += self.lr * numpy.dot((output_errors * final_outputs * (1.0 - final_outputs)),
                                         hidden_outputs.T)
         self.wih += self.lr * numpy.dot((hidden_errors * hidden_outputs * (1.0 - hidden_outputs)),
-                                        hidden_outputs.T)
+                                        inputs.T)
 
     def query(self, input_list):
         inputs = numpy.array(input_list, ndmin=2).T
