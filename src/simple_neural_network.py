@@ -22,8 +22,6 @@ class NeuralNetwork:
         self.activation_function = lambda x: scipy.special.expit(x)
 
     def train(self, input_list, target_list):
-        print('Training starts...')
-
         inputs = numpy.array(input_list, ndmin=2).T
         targets = numpy.array(target_list, ndmin=2).T
 
