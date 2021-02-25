@@ -20,6 +20,8 @@ class NeuralNetwork:
 
         # defaults to the sigmoid function
         self.activation_function = lambda x: scipy.special.expit(x)
+        # defaults to the logit function
+        self.inverse_activation_function = lambda x: scipy.special.logit(x)
 
     def train(self, input_list, target_list):
         inputs = numpy.array(input_list, ndmin=2).T
@@ -49,3 +51,34 @@ class NeuralNetwork:
         final_outputs = self.activation_function(final_inputs)
 
         return final_outputs
+
+    def backquery(self, target):
+        """
+        Back query the neural network to see the image produced by trained NN.
+        :param target:
+        :return:
+        """
+        # transpose the target list into a vertical array
+        final_output = numpy.array(target, ndmin=2).T
+
+        # calculate the signal into the output layer
+        final_input = self.inverse_activation_function(final_output)
+
+        # calculate the signal out of the hidden layer
+        hidden_output = numpy.dot(self.who.T, final_input)
+        # scale back to .01-.99
+        hidden_output -= numpy.min(hidden_output)
+        hidden_output /= numpy.max(hidden_output)
+        hidden_output *= 0.98
+        hidden_output += 0.01
+
+        hidden_input = self.inverse_activation_function(hidden_output)
+
+        inp = numpy.dot(self.wih.T, hidden_input)
+        # scale the input back to .01-.99
+        inp -= numpy.min(inp)
+        inp /= numpy.max(inp)
+        inp *= 0.98
+        inp += 0.01
+
+        return inp
